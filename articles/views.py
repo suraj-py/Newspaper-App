@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import  UpdateView, DeleteView, CreateView
 from django.urls import reverse_lazy
-from .models import Article
+from .models import Article, Comment
 
 class ArticleListView(ListView):
     model = Article
@@ -42,3 +42,14 @@ class ArticleDetailView(LoginRequiredMixin, DetailView):
     model = Article
     template_name = "article_detail.html"
     login_url = 'login'
+
+class CommentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = Comment
+    template_name = "add_comment.html"
+    fields = ('article', 'comment')
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user
+
+
