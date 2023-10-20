@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # local apps
     "users.apps.UsersConfig",
     "pages.apps.PagesConfig",
+    "articles.apps.ArticlesConfig",
 
     # 3rd party apps
     "crispy_forms",
@@ -137,4 +138,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
