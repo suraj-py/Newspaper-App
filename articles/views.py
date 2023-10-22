@@ -43,13 +43,18 @@ class ArticleDetailView(LoginRequiredMixin, DetailView):
     template_name = "article_detail.html"
     login_url = 'login'
 
-class CommentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     template_name = "add_comment.html"
     fields = ('article', 'comment')
+    # id = get_queryset()
+    success_url = reverse_lazy('article_list')
 
-    def test_func(self):
-        obj = self.get_object()
-        return obj.author == self.request.user
+    def get_queryset(self):
+        return Article.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
